@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "target": "es6",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": false,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "lib": [
+      "es2015",
+      "es6",
+      "es7"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "node"
+  ],
+  "include": [
+    "./src/",
+    "types"
+  ]
+}

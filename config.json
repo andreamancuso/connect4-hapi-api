@@ -1,0 +1,16 @@
+{
+  "server": {
+    "port": 3000,
+    "app": {
+      "fbApiKey": "fb-api-key",
+      "fbProjectId": "fb-project-id"
+    }
+  },
+  "register": {
+    "plugins": [
+      "blipp",
+      "./plugins/firebase",
+      "./plugins/routes"
+    ]
+  }
+}
