@@ -10,6 +10,7 @@
     "plugins": [
       "blipp",
       "./plugins/firebase",
+      "./plugins/games-service",
       "./plugins/routes"
     ]
   }

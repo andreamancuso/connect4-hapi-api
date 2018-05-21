@@ -2,17 +2,13 @@
 
 import * as hapi from "hapi";
 import {plainToClass} from "class-transformer";
-import {PLUGIN_API_ROUTES, PLUGIN_FIREBASE} from "../constants";
+import {PLUGIN_API_ROUTES, PLUGIN_GAMES_SERVICE, PLUGIN_GAMES_SERVICE_INSTANCE} from "../constants";
 import {GamesService} from "../services/games";
-import * as firebase from "firebase";
-import Firestore = firebase.firestore.Firestore;
 import {IGameEntity} from "../types";
 import {CreateGameDto, UpdateGameDto} from "../services/games.model";
 
 export function register(server: hapi.Server, options) {
-    const firestoreClient = server.plugins[PLUGIN_FIREBASE].firestoreClient as Firestore;
-
-    const gamesService: GamesService = new GamesService(firestoreClient);
+    const gamesService: GamesService = server.plugins[PLUGIN_GAMES_SERVICE][PLUGIN_GAMES_SERVICE_INSTANCE] as GamesService;
 
     server.route({
         method: "GET",
@@ -90,4 +86,4 @@ export function register(server: hapi.Server, options) {
 
 }
 
-exports.plugin = {register, name: PLUGIN_API_ROUTES, version: "0.1.0", dependencies: PLUGIN_FIREBASE};
+exports.plugin = {register, name: PLUGIN_API_ROUTES, version: "0.1.0", dependencies: PLUGIN_GAMES_SERVICE};

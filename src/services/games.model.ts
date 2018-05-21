@@ -16,7 +16,10 @@ export class CreateGameDto {
 }
 
 export class UpdateGameDto {
+    @Expose()
     readonly moves: IMove[];
+
+    @Expose()
     readonly result: GameResult;
 }
 
