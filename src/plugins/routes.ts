@@ -21,8 +21,8 @@ export function register(server: hapi.Server, options) {
             }
         },
         handler: async (request: hapi.Request, h) => {
-            if (request.params.userId) {
-                const game: IGameEntity|null = await gamesService.findOne(request.params.userId);
+            if (request.params.id) {
+                const game: IGameEntity|null = await gamesService.findOne(request.params.id);
                 const response = h.response(game);
                 if (game) {
                     response.type('application/json');
