@@ -1,11 +1,13 @@
 'use strict';
 
 import * as hapi from "hapi";
+import {plainToClass} from "class-transformer";
 import {PLUGIN_API_ROUTES, PLUGIN_FIREBASE} from "../constants";
 import {GamesService} from "../services/games";
 import * as firebase from "firebase";
 import Firestore = firebase.firestore.Firestore;
 import {IGameEntity} from "../types";
+import {CreateGameDto, UpdateGameDto} from "../services/games.model";
 
 export function register(server: hapi.Server, options) {
     const firestoreClient = server.plugins[PLUGIN_FIREBASE].firestoreClient as Firestore;
@@ -37,6 +39,52 @@ export function register(server: hapi.Server, options) {
                 response.type('application/json');
                 return response;
             }
+        }
+    });
+
+    server.route({
+        method: "POST",
+        path: "/games",
+        options: {
+            cors: {
+                origin: ['*']
+            }
+        },
+        handler: async (request: hapi.Request, h) => {
+            const createGameDto: CreateGameDto = plainToClass<CreateGameDto, object>(CreateGameDto, request.payload, {strategy: 'excludeAll'});
+
+            if (!createGameDto.player1 || !createGameDto.player2) {
+                return h
+                    .response({message: 'Invalid data'})
+                    .code(400);
+            }
+
+            const game: IGameEntity = await gamesService.create(createGameDto);
+
+            return h
+                .response(game)
+                .header('Location', `/games/${game.id}`)
+                .code(201)
+                .type('application/json');
+        }
+    });
+
+    server.route({
+        method: "PUT",
+        path: "/games/{id}",
+        options: {
+            cors: {
+                origin: ['*']
+            }
+        },
+        handler: async (request: hapi.Request, h) => {
+            const updateGameDto: UpdateGameDto = plainToClass<UpdateGameDto, object>(UpdateGameDto, request.payload, {strategy: 'excludeAll'});
+
+            await gamesService.update(request.params.id, updateGameDto);
+
+            return h
+                .response()
+                .code(204);
         }
     });
 

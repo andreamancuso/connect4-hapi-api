@@ -1,14 +1,17 @@
 import * as firebase from "firebase";
 import {GameResult, IFirestoreGame, IMove} from "../types";
 import {IsNotEmpty, IsString} from "class-validator";
+import {Expose} from "class-transformer";
 
 export class CreateGameDto {
     @IsNotEmpty()
     @IsString()
+    @Expose()
     readonly player1: string;
 
     @IsNotEmpty()
     @IsString()
+    @Expose()
     readonly player2: string;
 }
 
