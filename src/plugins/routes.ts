@@ -74,9 +74,27 @@ export function register(server: hapi.Server, options) {
             }
         },
         handler: async (request: hapi.Request, h) => {
-            const updateGameDto: UpdateGameDto = plainToClass<UpdateGameDto, object>(UpdateGameDto, request.payload, {strategy: 'excludeAll'});
+            // todo: Update UpdateGameDto so that it correctly loads the moves array property
+            // const updateGameDto: UpdateGameDto = plainToClass<UpdateGameDto, object>(UpdateGameDto, request.payload, {strategy: 'excludeAll'});
 
-            await gamesService.update(request.params.id, updateGameDto);
+            await gamesService.update(request.params.id, request.payload);
+
+            return h
+                .response()
+                .code(204);
+        }
+    });
+
+    server.route({
+        method: "DELETE",
+        path: "/games/{id}",
+        options: {
+            cors: {
+                origin: ['*']
+            }
+        },
+        handler: async (request: hapi.Request, h) => {
+            await gamesService.delete(request.params.id);
 
             return h
                 .response()

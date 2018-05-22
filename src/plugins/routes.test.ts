@@ -15,6 +15,7 @@ describe('Games API', () => {
             findAll: sinon.stub(),
             create: sinon.stub(),
             update: sinon.stub(),
+            delete: sinon.stub(),
         };
 
         server = hapi.server({ port: 80 });
@@ -81,6 +82,21 @@ describe('Games API', () => {
             expect(gamesService.update.firstCall.args[1]).to.deep.equal({
                 result: GameResult.Player1Won, moves: []
             });
+
+            expect(res.statusCode).to.equal(204);
+        })
+    });
+
+    describe('DELETE /games/game-id', () => {
+        it('should return create a game entity', async () => {
+            gamesService.delete.returns(Promise.resolve());
+
+            const res = await server.inject({method: 'DELETE', url: '/games/game-id', payload: {
+                result: GameResult.Player1Won, moves: []
+            }});
+
+            expect(gamesService.delete.callCount).to.equal(1);
+            expect(gamesService.delete.firstCall.args[0]).to.equal('game-id');
 
             expect(res.statusCode).to.equal(204);
         })
